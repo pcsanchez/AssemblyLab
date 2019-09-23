@@ -1,6 +1,5 @@
    
-
-  AUX		EQU    0
+AUX		EQU    0
    VARIABLE1	EQU    1
    VARIABLE2	EQU    2
    
@@ -24,19 +23,24 @@ LOOP:
     BRA	    LOOP
     
 RURINA_A: ;RUTINA GRAY
+    CLRF    AUX, 1
+RA_LOOP:
     BTFSS   PORTC, 3
     INCF    AUX, 1
     BTFSS   PORTC, 4
     DECF    AUX, 1
-    BRA	    RUTINA_A
+    BRA	    RA_LOOP
     
 RUTINA_B:;IMPAR
+    CLRF    AUX, 1
+    BSF	    AUX, 0
+RB_LOOP:
     MOVF    PORTB, 0
     BTFSS   PORTC, 3
-    ADDLW   1
+    ADDLW   2
     MOVWF   AUX, 1
     BTFSS   PORTC, 4
-    SUBLW   1
+    SUBLW   2
     MOVWF   AUX, 1
     BTFSC   AUX, 0
     MOVFF   AUX, LATB
@@ -49,15 +53,17 @@ RUTINA_B:;IMPAR
     BRA	    LOOP
     BTFSS   PORTC, 3
     BRA	    RUTINA_C
-    BRA	    RUTINA_B
+    BRA	    RB_LOOP
     
 RUTINA_C:;PAR
+    CLRF    AUX, 1
+RC_LOOP:
     MOVF    PORTB, 0
     BTFSS   PORTC, 3
-    ADDLW   1
+    ADDLW   2
     MOVWF   AUX, 1
     BTFSS   PORTC, 4
-    SUBLW   1
+    SUBLW   2
     MOVWF   AUX, 1
     BTFSS   AUX, 0
     MOVFF   AUX, LATB
@@ -70,7 +76,7 @@ RUTINA_C:;PAR
     BRA	    RUTINA_B
     BTFSS   PORTC, 3
     BRA	    LOOP
-    BRA	    RUTINA_C
+    BRA	    RC_LOOP
     
     
         
@@ -85,3 +91,5 @@ LOOP1:
     DECFSZ  VARIABLE1
     GOTO    LOOP1
     RETURN
+
+
